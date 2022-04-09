@@ -8,6 +8,11 @@
   - [基础设置](#基础设置)
   - [额外设置](#额外设置)
 - [通过SSH密钥连接GitHub](#通过ssh密钥连接github)
+- [Git使用](#git使用)
+  - [获取Git仓库](#获取git仓库)
+    - [在工作目录中初始化新仓库，并链接到远程仓库](#在工作目录中初始化新仓库并链接到远程仓库)
+    - [从现有的仓库拉取代码](#从现有的仓库拉取代码)
+  - [----wait update----](#----wait-update----)
 - [鉴权失败：添加GitHub个人访问令牌](#鉴权失败添加github个人访问令牌)
 
 -----------------
@@ -83,6 +88,43 @@ git config http.sslVerify false
     ssh -T git@github.com
     ```
 
+## Git使用
+
+### 获取Git仓库
+
+#### 在工作目录中初始化新仓库，并链接到远程仓库
+
+1. 要对现有的某个项目开始用`Git`管理，只需到此项目所在的目录进行初始化，执行：
+    ```bash
+    git init
+    ```
+2. 添加文件到暂存区
+    ```bash
+    git add <file> # 如：git add README.md
+    ```
+    ps：使用`git add -A`或`git add .`可以提交当前仓库的所有改动
+3. 提交文件到仓库
+    ```bash
+    git commit -m "description" # 添加备注信息 如：git commit -m "add README.md"
+    ```
+4. 本地仓库链接GitHub仓库
+    ```bash
+    git remote add origin <url> # 如：git remote add origin git@github.com:XIADENGMA/learngit.git
+    ```
+5. 提交代码到GitHub
+    ```bash
+    git push -u origin main
+    ```
+    - 如果显示鉴权失败，查看 [鉴权失败解决方法](#鉴权失败：添加GitHub个人访问令牌)
+
+#### 从现有的仓库拉取代码
+
+1. 从远程仓库上克隆项目到本地（到指定目录下运行）
+    ```bash
+    git clone <url> # 如：git clone https://github.com/XIADENGMA/MyNotes.git
+    ```
+
+### ----wait update----
 
 ## 鉴权失败：添加GitHub个人访问令牌
 
