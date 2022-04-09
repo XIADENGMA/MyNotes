@@ -7,7 +7,7 @@
 - [初次运行前的配置](#初次运行前的配置)
   - [基础设置](#基础设置)
   - [额外设置](#额外设置)
-- [](#)
+- [添加GitHub个人访问令牌](#添加github个人访问令牌)
 
 -----------------
 
@@ -60,4 +60,23 @@ git config http.sslVerify false
 ```
 
 
-## 
+## 添加GitHub个人访问令牌
+
+```text
+#测试克隆GitHub仓库
+git clone https://github.com/XIADENGMA/MyNotes.git
+```
+
+如果显示`fatal: 'https://github.com/XIADENGMA/MyNotes.git/' 鉴权失败`，则按照下面的步骤操作
+
+0. 路径： 头像->`Settings`->`Developer settings`->`Personal access tokens`->点击`Generate new token`->设置token名字、过期时间和权限->复制token->再次运行`git push`，填写帐号和token
+1. 头像->`Settings`
+    <img src="/Image/Basic%20Computer%20Knowledge/Git/git_01.png" title="NAME" height="30%" width="30%">
+2. `Settings`->`Developer settings`
+    <img src="/Image/Basic%20Computer%20Knowledge/Git/git_02.png" title="NAME" height="50%" width="50%">
+3. `Developer settings`->`Personal access tokens`
+    <img src="/Image/Basic%20Computer%20Knowledge/Git/git_03.png" title="NAME" height="50%" width="50%">
+4. 点击`Generate new token`->设置token名字、过期时间和权限->复制token
+    <img src="/Image/Basic%20Computer%20Knowledge/Git/git_04.png" title="NAME" height="100%" width="100%">
+5. 复制token->运行`git push`，填写帐号和token
+    <img src="/Image/Basic%20Computer%20Knowledge/Git/git_05.png" title="NAME" height="100%" width="100%">
