@@ -20,8 +20,8 @@ sudo apt install git
 ```
 
 其他请参考
-> [Git安装教程 - Linux](https://git-scm.com/download/linux)
-> [Git安装教程 - Windows and MacOS](https://www.liaoxuefeng.com/wiki/896043488029600/896067074338496)
+-  [Git安装教程 - Linux](https://git-scm.com/download/linux)
+-  [Git安装教程 - Windows and MacOS](https://www.liaoxuefeng.com/wiki/896043488029600/896067074338496)
 
 查看当前Git版本： `git --version`
 
