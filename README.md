@@ -15,7 +15,7 @@
 
 ### Git
 
-- [Git基础知识及常用方法](./Basic%20Computer%20Knowledge/Git/Git.md)
+- [Git基础知识及常用方法](./Basic%20Computer%20Knowledge/Git/Git基础知识及常用方法.md)
 
 ## Computer Vision
 
