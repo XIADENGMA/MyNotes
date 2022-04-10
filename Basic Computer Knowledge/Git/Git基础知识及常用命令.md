@@ -20,8 +20,33 @@
     - [`git push`&`git pull`：将本地仓库推送到远程仓库，或者从远程仓库拉取本地仓库](#git-pushgit-pull将本地仓库推送到远程仓库或者从远程仓库拉取本地仓库)
     - [`git branch`：创建、删除、切换分支](#git-branch创建删除切换分支)
     - [`git merge`：合并分支](#git-merge合并分支)
-  - [基础使用：已有一个项目，但之前未使用Git，将之推送到GitHub](#基础使用已有一个项目但之前未使用git将之推送到github)
-- [鉴权失败：添加GitHub个人访问令牌](#鉴权失败添加github个人访问令牌)
+    - [`git rebase`：分支变基](#git-rebase分支变基)
+    - [`git stash`：保存和恢复进度](#git-stash保存和恢复进度)
+    - [`git diff`：查看工作区和暂存区的差异](#git-diff查看工作区和暂存区的差异)
+    - [`git remote`：操作远程仓库](#git-remote操作远程仓库)
+    - [`git tag`：操作标签](#git-tag操作标签)
+    - [`git rm`：删除文件](#git-rm删除文件)
+    - [`git checkout`：切换分支](#git-checkout切换分支)
+    - [`git reset`：回退版本](#git-reset回退版本)
+    - [`git revert`：回退版本但不回退之前的提交](#git-revert回退版本但不回退之前的提交)
+    - [`git checkout`&`git reset`&`git revert`：版本切换&重设&撤销的区别](#git-checkoutgit-resetgit-revert版本切换重设撤销的区别)
+    - [`git cherry-pick`：遴选](#git-cherry-pick遴选)
+    - [`git bisect`：调试](#git-bisect调试)
+    - [`git submodule`：子模块](#git-submodule子模块)
+  - [常用操作](#常用操作)
+    - [已有一个项目，但之前未使用Git，将之推送到GitHub](#已有一个项目但之前未使用git将之推送到github)
+    - [已有一个项目，并且已经推送到GitHub，现在更新了代码，再次推送](#已有一个项目并且已经推送到github现在更新了代码再次推送)
+- [Git分支管理规范](#git分支管理规范)
+- [Git 钩子](#git-钩子)
+  - [`pre-commit`](#pre-commit)
+    - [安装`pre-commit`](#安装pre-commit)
+    - [常用指令](#常用指令)
+    - [添加第三方 hooks](#添加第三方-hooks)
+    - [跳过`pre-commit`继续提交代码](#跳过pre-commit继续提交代码)
+- [Git忽略文件`.gitignore`的使用](#git忽略文件gitignore的使用)
+- [常见问题](#常见问题)
+  - [鉴权失败：添加GitHub个人访问令牌](#鉴权失败添加github个人访问令牌)
+- [参考资料](#参考资料)
 
 -----------------
 
@@ -409,10 +434,327 @@ git merge
 git merge --no-ff 
 
 git merge --squash 
-
 ```
 
-### 基础使用：已有一个项目，但之前未使用Git，将之推送到GitHub
+- `fast-forward（默认）`：会在当前分支的提交历史中添加进被合并分支的提交历史
+- `--no-ff`：会生成一个新的提交，让当前分支的提交历史不会那么乱
+- `--squash`：不会生成新的提交，会将被合并分支多次提交的内容直接存到工作区和暂存区，由开发者手动去提交，这样当前分支最终只会多出一条提交记录，不会掺杂被合并分支的提交历史
+
+#### `git rebase`：分支变基
+
+<----wait to update---->
+
+1. [rebase 用法小结](https://www.jianshu.com/p/4a8f4af4e803)
+2. [Git分支-变基](https://git-scm.com/book/zh/v2/Git-%E5%88%86%E6%94%AF-%E5%8F%98%E5%9F%BA)
+
+#### `git stash`：保存和恢复进度
+
+- 将修改的代码先暂存至堆栈中，让本地仓库回到最后一次提交时的状态，便于代码的更新管理，主要避免修改文件与最新代码的冲突
+- 如果文件没有提交到暂存区（`git add`），使用该命令会提示`No local changes to save`，无法将修改保存到堆栈中
+- 使用场景：当你接到一个修复紧急bug的任务时候，一般都是先创建一个新的bug分支来修复它，然后合并，最后删除。但是，如果当前你正在开发功能中，短时间还无法完成，无法直接提交到仓库，这时候可以先把当前工作区的内容`git stash`一下，然后去修复bug，修复后，再`git stash pop`，恢复之前的工作内容。
+
+```bash
+# 将所有未提交的修改（提交到暂存区）保存至堆栈中
+git stash 
+
+# 给本次存储加个备注，以防时间久了忘了
+git stash save "存储"
+
+# 存储未追踪的文件
+git stash -u
+
+# 查看存储记录
+git stash list
+
+# 恢复最新的进度到工作区
+git stash pop
+# 恢复后，stash 记录并不删除
+git stash apply <stash@{index}>
+# 恢复的同时把 stash 记录也删了
+git stash pop <stash@{index}>
+# 删除 stash 记录
+git stash drop <stash@{index}>
+
+# 删除所有存储的进度
+git stash clear
+
+# 查看当前记录中修改了哪些文件
+git stash show <stash@{index}>
+# 查看当前记录中修改了哪些文件的内容
+git stash show -p <stash@{index}> 
+```
+
+#### `git diff`：查看工作区和暂存区的差异
+
+```bash
+# 查看工作区和暂存区所有文件的对比
+git diff
+
+# 查看工作区和暂存区单个文件的对比
+git diff <file_name> 
+
+# 查看工作区和暂存区所有文件的对比，并显示出所有有差异的文件列表
+git diff --stat   
+
+# 查看暂存区与上次提交到本地仓库的快照（即最新提交到本地仓库的快照）的对比
+git diff --cached
+git diff --staged
+
+# 查看工作区与上次提交到本地仓库的快照（即最新提交到本地仓库的快照）的对比
+git diff <branch_name>
+
+# 查看工作区与 HEAD 指向（默认当前分支最新的提交）的对比
+git diff HEAD   
+
+# 查看两个本地分支中某一个文件的对比
+git diff <branch_name>..<branch_name> <file_name>
+# 查看两个本地分支所有的对比
+git diff <branch_name>..<branch_name>
+
+# 查看远程分支和本地分支的对比
+git diff origin/<branch_name>..<branch_name>
+# 查看远程分支和远程分支的对比
+git diff origin/<branch_name>..origin/<branch_name>
+
+# 查看两个 commit 的对比
+git diff <commit1>..<commit2>
+```
+
+- 你修改了某个文件，但是没有提交到暂存区，这时候会有对比的内容
+- 一旦提交到暂存区，就不会有对比的内容（因为暂存区已经更新）
+- 如果你新建了一个文件，但是没有提交到暂存区，这时候`git diff`是没有结果的	
+
+#### `git remote`：操作远程仓库
+
+```bash
+# 查看所有远程主机
+git remote
+
+# 查看关联的远程仓库的详细信息
+git remote -v 
+
+# 删除远程仓库的“关联”
+git remote rm <project_name> #填写关联的仓库名称 如：origin
+
+# 设置远程仓库的“关联”
+git remote add <project_name> <url> #填写关联的仓库名称和仓库地址
+
+# 修改仓库名称 
+git remote rename <old_project_name> <new_project_name> # 如：origin test
+```
+
+#### `git tag`：操作标签
+
+- 常用于发布版本
+
+```bash
+# 默认在 HEAD 上创建一个标签 
+git tag <tag_name>
+# 指定一个 commit id 创建一个标签 
+git tag <tag_name> <commit_id>
+# 创建带有说明的标签，用 -a 指定标签名，-m 指定说明文字
+git tag -a <tag_name> -m "description" # 填写标签说明
+
+# 查看所有标签
+# 注意：标签不是按时间顺序列出，而是按字母排序的。
+git tag
+git tag -l
+
+#查看远程所有标签
+git ls-remote --tags origin
+
+# 查看单个标签具体信息
+git show <tag_name>
+
+# 推送一个本地标签
+git push origin <tag_name>
+# 推送全部未推送过的本地标签
+git push origin --tags
+
+# 删除本地标签
+# 因为创建的标签都只存储在本地，不会自动推送到远程。
+# 所以，打错的标签可以在本地安全删除。
+git tag -d v0.1
+# 删除一个远程标签（先删除本地 tag ，然后再删除远程 tag）
+git push origin :refs/tags/<tagname>
+
+# 检出标签
+git checkout <tag_name>
+```
+
+#### `git rm`：删除文件
+
+```bash
+# 删除暂存区和工作区的文件
+git rm <file_name>  
+
+# 只删除暂存区的文件，不会删除工作区的文件
+git rm --cached <file_name> 
+```
+
+- 如果在配置`.gitignore`文件之前就把某个文件上传到远程仓库了，这时候想把远程仓库中的该文件删除，此时你配置`.gitignore`文件也没有用，因为该文件已经被追踪了，但又不想在本地删除该文件后再重新提交到远程仓库，这时候可以使用`git rm --cached filename`命令取消该文件的追踪，这样下次提交的时候，git就不会再提交这个文件，从而远程仓库的该文件也会被删除
+
+#### `git checkout`：切换分支
+
+```bash
+# 恢复暂存区的指定文件到工作区
+git checkout <file_name>
+
+# 恢复暂存区的所有文件到工作区
+git checkout .
+
+# 回滚到最近的一次提交
+# 如果修改某些文件后，没有提交到暂存区，此时的回滚是回滚到上一次提交
+# 如果是已经将修改的文件提交到仓库了，这时再用这个命令回滚无效
+# 因为回滚到的是之前自己修改后提交的版本
+git checkout HEAD 
+git checkout HEAD -- <file_name>
+
+# 回滚到最近一次提交的上一个版本
+git checkout HEAD^ 
+# 回滚到最近一次提交的上2个版本
+git checkout HEAD^^ 
+
+# 切换分支，在这里也可以看做是回到项目「当前」状态的方式
+git checkout <branch_name>
+
+# 切换到某个指定的 commit 版本
+git checkout <commit_id>
+
+# 切换指定 tag 
+git checkout <tag>
+```
+
+- 在开发的正常阶段，`HEAD`一般指向`main`或是其他的本地分支，但当你使用`git checkout <commit id>`切换到指定的某一次提交的时候，`HEAD`就不再指向一个分支了——它直接指向一个提交，`HEAD`就会处于`detached`状态（游离状态）
+- 切换到某一次提交后，你可以查看文件，编译项目，运行测试，甚至编辑文件而不需要考虑是否会影响项目的当前状态，你所做的一切都不会被保存到主栈的仓库中。当你想要回到主线继续开发时，使用`git checkout <branch_name>`回到项目初始的状态（这时候会提示你是否需要新建一条分支用于保留刚才的修改）
+- 哪怕你切换到了某一版本的提交，并且对它做了修改后，不小心提交到了暂存区，只要你切换回分支的时候，依然会回到项目的初始状态。（注意：你所做的修改，如果 commit 了，会被保存到那个版本中。切换完分支后，会提示你是否要新建一个分支来保存刚才修改的内容。如果你刚才解决了一个bug，这时候可以新建一个临时分支，然后你本地自己的开发主分支去合并它，合并完后删除临时分支）
+- 一般使用`git checkout`回退版本，查看历史代码，测试bug在哪
+
+#### `git reset`：回退版本
+
+- `git reset [--hard|soft|mixed|merge|keep] [<commit>或HEAD]`：将当前的分支重设(`reset`)到指定的`<commit>`或者`HEAD`(默认，如果不显示指定`<commit>`，默认是`HEAD`，即最新的一次提交)，并且根据`[mode]`有可能更新索引和工作目录。
+- mode的取值可以是`hard、soft、mixed、merged、keep`
+
+```bash
+# 从暂存区撤销特定文件，但不改变工作区。它会取消这个文件的暂存，而不覆盖任何更改
+git reset <file_name>
+# 重置暂存区最近的一次提交，但工作区的文件不变
+git reset 
+# 等价于 
+git reset HEAD
+
+# 重置暂存区与工作区，回退到最近一次提交的版本内容
+git reset --hard 
+# 重置暂存区与工作区，回退到最近一次提交的上一个版本
+git reset --hard HEAD^ 
+
+# 将当前分支的指针指向为指定 commit（该提交之后的提交都会被移除），同时重置暂存区，但工作区不变
+git reset <commit_id>
+# 等价于 
+git reset --mixed  <commit_id>
+
+# 将当前分支的指针指向为指定 commit（该提交之后的提交都会被移除），但保持暂存区和工作区不变
+git reset --soft  <commit_id>
+
+# 将当前分支的指针指向为指定 commit（该提交之后的提交都会被移除），同时重置暂存区、工作区
+git reset --hard <commit_id>
+```
+
+- `git reset`有很多种用法。它可以被用来移除提交快照，尽管它通常被用来撤销暂存区和工作区的修改
+    不管是哪种情况，它应该只被用于本地修改——你永远不应该重设和其他开发者共享的快照
+- 当你用 reset 回滚到了某个版本后，那么在下一次 git 提交时，之前该版本后面的版本会被作为垃圾删掉
+- 当我们回退到一个旧版本后，此时再用 git log 查看提交记录，会发现之前的新版本记录没有了。如果第二天，你又想恢复到新版本怎么办？找不到新版本的 `<commit_id>`怎么办？
+  - 我们可以用`git reflog`查看历史命令，这样就可以看到之前新版本的 `<commit_id>`，然后`git reset --hard <commit_id>`就可以回到之前的新版本代码
+  - 虽然可以用`git reflog`查看本地历史，然后回复到之前的新版本代码，但是在别的电脑上是无法获取你的历史命令的，所以这种方法不安全。万一你的电脑突然坏了，这时候就无法回到未来的版本
+
+#### `git revert`：回退版本但不回退之前的提交
+
+```bash
+# 生成一个撤销最近的一次提交的新提交
+ git revert HEAD 
+# 生成一个撤销最近一次提交的上一次提交的新提交
+ git revert HEAD^ 
+# 生成一个撤销最近一次提交的上两次提交的新提交
+ git revert HEAD^^ 
+# 生成一个撤销最近一次提交的上n次提交的新提交
+ git revert HEAD~num 
+
+# 生成一个撤销指定提交版本的新提交
+ git revert <commit_id>
+# 生成一个撤销指定提交版本的新提交，执行时不打开默认编辑器，直接使用 Git 自动生成的提交信息
+ git revert <commit_id> --no-edit
+```
+
+- `git revert`命令用来撤销某个已经提交的快照（和`git reset`重置到某个指定版本不一样）。它是在提交记录最后面加上一个撤销了更改的新提交，而不是从项目历史中移除这个提交，这避免了Git丢失项目历史
+- 撤销（revert）应该用在你想要在项目历史中移除某个提交的时候。比如说，你在追踪一个bug，然后你发现它是由一个提交造成的，这时候撤销就很有用
+- 撤销（revert）被设计为撤销公共提交的安全方式，重设（reset）被设计为重设本地更改
+  - 因为两个命令的目的不同，它们的实现也不一样：重设完全地移除了一堆更改，而撤销保留了原来的更改，用一个新的提交来实现撤销。
+  - 千万不要用`git reset`回退已经被推送到公共仓库上的提交，它只适用于回退本地修改（从未提交到公共仓库中）。如果你需要修复一个公共提交，最好使用`git revert`
+- 发布一个提交之后，你必须假设其他开发者会依赖于它。移除一个其他团队成员在上面继续开发的提交在协作时会引发严重的问题。当他们试着和你的仓库同步时，他们会发现项目历史的一部分突然消失了。一旦你在重设之后又增加了新的提交，Git 会认为你的本地历史已经和`origin/main`分叉了，同步你的仓库时的合并提交(merge commit)会使你的同事困惑。
+
+#### `git checkout`&`git reset`&`git revert`：版本切换&重设&撤销的区别
+
+- `checkout`可以撤销工作区的文件，`reset`可以撤销工作区/暂存区的文件
+- `reset`和`checkout`可以作用于`commit`或者文件，`revert`只能作用于`commit`
+- `git revert`命令通过创建一次新的`commit`来撤销一次`commit`所做出的修改。这种撤销的方式是安全的，因为它并不修改commitm history, 比如下边的命令将会查出倒数第二次（即当前`commit`的往前一次）提交的修改，并创建一个新的提交，用于撤销当前提交的上一次`commit`）
+- `git reset`操作之后的`commit`都不会被保留
+- `git checkout`用于切分支或者`<commit_id>`
+
+#### `git cherry-pick`：遴选
+- 将指定的提交`commit`应用于当前分支（可以用于恢复不小心撤销（`git revert`/`git reset`）的提交）
+
+```bash
+git cherry-pick <commit_id>
+git cherry-pick <commit_id> <commit_id>
+git cherry-pick <commit_id>^..<commit_id>
+```
+
+#### `git bisect`：调试
+
+- 快速找出有bug的`commit`
+- 它的原理很简单，就是将代码提交的历史，按照两分法不断缩小定位。所谓"两分法"，就是将代码历史一分为二，确定问题出在前半部分，还是后半部分，不断执行这个过程，直到范围缩小到某一次代码提交
+
+```bash
+# "终点"是最近的提交，"起点"是更久以前的提交
+git bisect start [终点] [起点]
+git bisect start HEAD commit_id
+
+# 标识本次提交没有问题
+git bisect good
+# 标识本次提交（第76）有问题
+git bisect bad
+
+# 退出查错，回到最近一次的代码提交
+git bisect reset
+```
+
+#### `git submodule`：子模块
+
+- 有种情况我们经常会遇到：某个工作中的项目需要包含并使用另一个项目。也许是第三方库，或者你独立开发的，用于多个父项目的库。 现在问题来了：你想要把它们当做两个独立的项目，同时又想在一个项目中使用另一个。如果将另外一个项目中的代码复制到自己的项目中，那么你做的任何自定义修改都会使合并上游的改动变得困难
+- Git通过子模块来解决这个问题，允许你将一个Git仓库作为另一个Git仓库的子目录。它能让你将另一个仓库克隆到自己的项目中，同时还保持提交的独立
+
+```bash
+# 在主项目中添加子项目，url 为子模块的路径，path 为该子模块存储的目录路径
+git submodule add <url> <path>
+
+# 克隆含有子项目的主项目
+git clone <url>
+
+# 当你在克隆这样的项目时，默认会包含该子项目的目录，但该目录中还没有任何文件
+# 初始化本地配置文件
+git submodule init
+# 从当前项目中抓取所有数据并检出父项目中列出的合适的提交
+git submodule update
+# 等价于 git submodule init && git submodule update
+git submodule update --init
+
+# 自动初始化并更新仓库中的每一个子模块， 包括可能存在的嵌套子模块
+git clone --recurse-submodules <url>
+```
+
+### 常用操作
+
+#### 已有一个项目，但之前未使用Git，将之推送到GitHub
 1. 去GitHub上创建一个新的项目
    1. 路径：`Repositories`->`New`->填写仓库信息->点击`Create repository`
       1. `Repositories`->`New`
@@ -430,7 +772,94 @@ git merge --squash
     ```
 3. 至此，项目已经推送到GitHub，并且本地仓库已经设置好
 
-## 鉴权失败：添加GitHub个人访问令牌
+#### 已有一个项目，并且已经推送到GitHub，现在更新了代码，再次推送
+
+```bash
+git add . # 添加所有文件
+git commit -m "update code" # 提交，填写本次提交说明
+git push
+```
+
+## Git分支管理规范
+
+- 实际开发的时候，一人一条分支（个人见解：除非是大项目，参与的开发人员很多时，可以采用`feature`分支，否则一般的项目中，一个开发者一条分支够用了）。除此之外还要有一条`develop`开发分支，一条`test`测试分支，一条`release`预发布分支
+  - `develop`：开发分支，开发人员每天都需要拉取/提交最新代码的分支
+  - `test`：测试分支，开发人员开发完并自测通过后，发布到测试环境的分支
+  - `release`：预发布分支，测试环境测试通过后，将测试分支的代码发布到预发环境的分支（这个得看公司支不支持预发环境，没有的话就可以不采用这条分支）
+  - `main`：线上分支，预发环境测试通过后，运营/测试会将此分支代码发布到线上环境
+- 大致流程：
+  - 开发人员每天都需要拉取/提交最新的代码到 develop 分支；
+  - 开发人员开发完毕，开始 集成测试，测试无误后提交到 test 分支并发布到测试环境，交由测试人员测试
+  - 测试环境通过后，发布到`release`分支 上，进行预发环境测试
+  - 预发环境通过后，发布到`master`分支上并打上标签（`tag`）
+  - 如果线上分支出了bug，这时候相关开发者应该基于预发布分支（没有预发环境，就使用`master`分支），新建一个`bug`分支用来临时解决bug，处理完后申请合并到`release`分支。这样做的好处就是：不会影响正在开发中的功能
+- 预发布环境的作用：预发布环境是正式发布前最后一次测试。因为在少数情况下即使预发布通过了，都不能保证正式生产环境可以100%不出问题；预发布环境的配置，数据库等都是跟线上一样；有些公司的预发布环境数据库是连接线上环境，有些公司预发布环境是单独的数据库；如果不设预发布环境，如果开发合并代码有问题，会直接将问题发布到线上，增加维护的成本
+
+## Git 钩子
+
+[在 Git 项目中使用 pre-commit 统一管理 hooks](https://blog.csdn.net/DoneSpeak/article/details/118469221)
+[自定义 Git - Git 钩子](https://git-scm.com/book/zh/v2/%E8%87%AA%E5%AE%9A%E4%B9%89-Git-Git-%E9%92%A9%E5%AD%90)
+
+- Git基本已经成为项目开发中默认的版本管理软件，在使用Git的项目中，我们可以为项目设置`Git Hooks`来帮我们在提交代码的各个阶段做一些代码检查等工作
+- 钩子（Hooks）都被存储在`Git`目录下的`hooks`子目录中。也就是绝大部分项目中的`.git/hook`目录
+- 钩子分为两大类，客户端的和服务器端的
+  - 客户端钩子主要被提交和合并这样的操作所调用
+  - 而服务器端钩子作用于接收被推送的提交这样的联网操作，这里主要介绍客户端钩子
+
+### `pre-commit`
+
+- `pre-commit`就是在代码提交之前做些东西，比如代码打包，代码检测，称之为钩子（hook）
+- 在`commit`之前执行一个回调函数（`callback`）。这个函数成功执行完之后，再继续`commit`，但是失败之后就阻止`commit`
+- 在`.git->hooks`内有个`pre-commit.sample*`，这个里面就是默认的函数(脚本)样本
+
+#### 安装`pre-commit`
+
+- 在系统中安装`pre-commit`
+    ```bash
+    pip install pre-commit
+    ```
+- 在项目中安装`pre-commit`
+    ```bash
+    cd <git-repo>
+    pre-commit install
+    # 卸载
+    pre-commit uninstall
+    ```
+
+#### 常用指令
+```bash
+# 手动对所有的文件执行hooks，新增hook的时候可以执行，使得代码均符合规范。直接执行该指令则无需等到pre-commit阶段再触发hooks
+pre-commit run --all-files
+
+# 执行特定hooks
+pre-commit run <hook_id>
+
+# 将所有的hook更新到最新的版本/tag
+pre-commit autoupdate
+
+# 指定更新repo
+pre-commit autoupdate --repo https://github.com/XIADNEMGA/gromithooks
+```
+
+#### 添加第三方 hooks
+
+<----wait to update---->
+
+#### 跳过`pre-commit`继续提交代码
+
+```bash
+# 跳过验证
+git commit --no-verify
+git commit -n
+```
+
+## Git忽略文件`.gitignore`的使用
+
+<----wait to update---->
+
+## 常见问题
+
+### 鉴权失败：添加GitHub个人访问令牌
 
 如果`git push`显示`fatal: 'https://github.com/XIADENGMA/MyNotes.git/' 鉴权失败`，则按照下面的步骤操作：
 
@@ -447,3 +876,12 @@ git merge --squash
        <img src="/Image/Basic%20Computer%20Knowledge/Git/git_04.png" title="NAME" height="100%" width="100%">
    5. 复制token->运行`git push`，填写帐号和token
        <img src="/Image/Basic%20Computer%20Knowledge/Git/git_05.png" title="NAME" height="100%" width="100%">
+
+
+<----wait to update---->
+
+## 参考资料
+
+- [多年 Git 使用心得 & 常见问题整理](https://juejin.cn/post/6844904191203213326#heading-6)
+- [Git 教程-廖雪峰](https://www.liaoxuefeng.com/wiki/896043488029600)
+- [Pro Git](https://git-scm.com/book/zh/v2)
