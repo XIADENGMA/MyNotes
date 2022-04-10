@@ -47,6 +47,8 @@
 - [常见问题](#常见问题)
   - [鉴权失败：添加GitHub个人访问令牌](#鉴权失败添加github个人访问令牌)
   - [error: 远程 origin 已经存在](#error-远程-origin-已经存在)
+  - [fatal: 当前分支 main 没有对应的上游分支](#fatal-当前分支-main-没有对应的上游分支)
+  - [error: 无法推送一些引用到 'https://github.com/XIADENGMA/MyNotes.git'](#error-无法推送一些引用到-httpsgithubcomxiadengmamynotesgit)
 - [参考资料](#参考资料)
 
 -----------------
@@ -880,8 +882,12 @@ git commit -n
 
 ### error: 远程 origin 已经存在
 
+### fatal: 当前分支 main 没有对应的上游分支
+
+### error: 无法推送一些引用到 'https://github.com/XIADENGMA/MyNotes.git'
 
 <----wait to update---->
+
 
 ## 参考资料
 
