@@ -46,6 +46,7 @@
 - [Git忽略文件`.gitignore`的使用](#git忽略文件gitignore的使用)
 - [常见问题](#常见问题)
   - [鉴权失败：添加GitHub个人访问令牌](#鉴权失败添加github个人访问令牌)
+  - [error: 远程 origin 已经存在](#error-远程-origin-已经存在)
 - [参考资料](#参考资料)
 
 -----------------
@@ -876,6 +877,8 @@ git commit -n
        <img src="/Image/Basic%20Computer%20Knowledge/Git/git_04.png" title="NAME" height="100%" width="100%">
    5. 复制token->运行`git push`，填写帐号和token
        <img src="/Image/Basic%20Computer%20Knowledge/Git/git_05.png" title="NAME" height="100%" width="100%">
+
+### error: 远程 origin 已经存在
 
 
 <----wait to update---->
