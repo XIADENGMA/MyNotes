@@ -48,7 +48,7 @@
   - [鉴权失败：添加GitHub个人访问令牌](#鉴权失败添加github个人访问令牌)
   - [error: 远程 origin 已经存在](#error-远程-origin-已经存在)
   - [fatal: 当前分支 main 没有对应的上游分支](#fatal-当前分支-main-没有对应的上游分支)
-  - [error: 无法推送一些引用到 'https://github.com/XIADENGMA/MyNotes.git'](#error-无法推送一些引用到-httpsgithubcomxiadengmamynotesgit)
+  - [error: 无法推送一些引用到 'https://github.com/xxxxx/xxxxx.git'](#error-无法推送一些引用到-httpsgithubcomxxxxxxxxxxgit)
 - [参考资料](#参考资料)
 
 -----------------
@@ -882,9 +882,28 @@ git commit -n
 
 ### error: 远程 origin 已经存在
 
+可能是不小心将git远程地址配错了
+
+- 解决方法：将远程配置删除，重新添加
+    ```bash
+    git remote rm origin
+    git remote add origin https://github.com/xxxx/xxxx.git
+    ```
+
 ### fatal: 当前分支 main 没有对应的上游分支
 
-### error: 无法推送一些引用到 'https://github.com/XIADENGMA/MyNotes.git'
+- 解决方法：
+    ```bash
+    git push --set-upstream origin <branch_name> #如：main
+    ```
+
+### error: 无法推送一些引用到 'https://github.com/xxxxx/xxxxx.git'
+
+- 解决方法：强制推送
+    ```bash
+    git push -u origin +<branch_name> #如：main
+    ```
+
 
 <----wait to update---->
 
