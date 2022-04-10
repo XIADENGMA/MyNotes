@@ -2,8 +2,9 @@
 
 ---------------------
 
+- [Git基础知识](#git基础知识)
 - [Git安装](#git安装)
-- [初次运行前的配置](#初次运行前的配置)
+- [Git初次使用的配置](#git初次使用的配置)
   - [基础设置](#基础设置)
   - [额外设置](#额外设置)
 - [通过SSH密钥连接GitHub](#通过ssh密钥连接github)
@@ -13,11 +14,20 @@
     - [`git log`的点线图](#git-log的点线图)
   - [Git常用命令](#git常用命令)
   - [Git常用命令详解](#git常用命令详解)
-    - [git add](#git-add)
+    - [`git add`：将工作区的文件添加到暂存区](#git-add将工作区的文件添加到暂存区)
+    - [`git status`：查看工作区和暂存区的状态](#git-status查看工作区和暂存区的状态)
+    - [`git commit`：将暂存区的文件提交到本地仓库并添加提交说明](#git-commit将暂存区的文件提交到本地仓库并添加提交说明)
+    - [`git push`&`git pull`：将本地仓库推送到远程仓库，或者从远程仓库拉取本地仓库](#git-pushgit-pull将本地仓库推送到远程仓库或者从远程仓库拉取本地仓库)
+    - [`git branch`：创建、删除、切换分支](#git-branch创建删除切换分支)
+    - [`git merge`：合并分支](#git-merge合并分支)
   - [基础使用：已有一个项目，但之前未使用Git，将之推送到GitHub](#基础使用已有一个项目但之前未使用git将之推送到github)
 - [鉴权失败：添加GitHub个人访问令牌](#鉴权失败添加github个人访问令牌)
 
 -----------------
+
+## Git基础知识
+
+<----wait to update---->
 
 ## Git安装
 
@@ -35,7 +45,7 @@ sudo apt install git
 
 查看当前Git版本： `git --version`
 
-## 初次运行前的配置
+## Git初次使用的配置
 
 ### 基础设置
 
@@ -56,7 +66,7 @@ git config --global credential.helper store
 ### 额外设置
 
 ```bash
-# 配置Git默认编辑器为vim（也可以是别的）
+# 配置Git默认编辑器为vim（也可以是别的，请了解Vim的基本使用）
 git config --global core.editor "vim"
 
 # 配置Git的默认分支，用以配合GitHub的变化（需要Git版本>=2.28）
@@ -225,9 +235,7 @@ git stash pop
 
 ### Git常用命令详解
 
-#### git add
-
-将工作区的文件添加到暂存区
+#### `git add`：将工作区的文件添加到暂存区
 
 ```bash
 # 添加指定文件到暂存区（追踪新增的指定文件）
@@ -239,6 +247,11 @@ git add <dir> # 填写目录名
 # 添加当前目录的所有文件到暂存区（追踪所有新增的文件）
 git add .
 git add -A
+git add –all
+
+# 提交所有被删除和修改的文件到数据暂存区
+git add -u 
+git add –update
 
 # 删除工作区/暂存区的文件
 git rm <file1> <file2> <...> # 填写文件名
@@ -250,8 +263,154 @@ git rm --cached <file> # 填写文件名
 git mv <file-original> <file-renamed> # 填写重命名之前的文件名和之后的文件名
 ```
 
-- `git add .`：操作的对象是“当前目录”所有文件变更，“.” 表示当前目录。会监控工作区的状态树，使用它会把工作区的所有变化提交到暂存区，包括文件内容修改（modified）以及新文件（new），但不包括被删除的文件
-- 
+- `git add .`及`git add -A`：
+  - 操作的对象是“整个工作区”所有文件的变更，无论当前位于哪个目录下
+- `git add -u`：
+  - 操作的对象是整个工作区已经跟踪的文件变更，无论当前位于哪个目录下
+    仅监控已经被`add`的文件（即`tracked file`），它会将被修改的文件（包括文件删除）提交到暂存区
+    `git add -u`不会提交新文件（`untracked file`）
+
+#### `git status`：查看工作区和暂存区的状态
+
+```bash
+# 查看工作区和暂存区的状态
+git status 
+```
+
+#### `git commit`：将暂存区的文件提交到本地仓库并添加提交说明
+
+```bash
+# 将暂存区的文件提交到本地仓库并添加提交说明
+git commit -m "本次提交的说明"   
+
+# add 和 commit 的合并，便捷写法
+# 和 git add -u 命令一样，未跟踪的文件是无法提交上去的
+git commit -am "本次提交的说明"  
+
+# 跳过验证继续提交
+git commit --no-verify
+git commit -n
+
+# 编辑器会弹出上一次提交的信息，可以在这里修改提交信息
+git commit --amend
+
+# 修复提交，同时修改提交信息
+git commit --amend -m "修改后的提交说明"
+
+# 加入 --no-edit 标记会修复提交但不修改提交信息，编辑器不会弹出上一次提交的信息
+git commit --amend --no-edit
+```
+
+- `git commit --amend`：
+  - 既可以修改上次提交的文件内容，也可以修改上次提交的说明。会用一个新的 `commit` 更新并替换最近一次提交的`commit`
+    如果暂存区有内容，这个新的`commit`会把任何修改内容和上一个`commit`的内容结合起来
+    如果暂存区没有内容，那么这个操作就只会把上次的`commit`消息重写一遍
+  - **永远不要修复一个已经推送到公共仓库中的提交，会拒绝推送到仓库**
+
+#### `git push`&`git pull`：将本地仓库推送到远程仓库，或者从远程仓库拉取本地仓库
+
+```bash
+# 将本地仓库的文件推送到远程分支
+# 如果远程仓库没有这个分支，会新建一个同名的远程分支
+# 如果省略远程分支名，则表示两者同名
+git push <远程主机名> <本地分支名>:<远程分支名>
+git push origin <branch_name> #填写分支名称，如：main
+
+# 如果省略本地分支名，则表示删除指定的远程分支
+# 因为这等同于推送一个空的本地分支到远程分支。
+git push origin :<branch_name>
+# 等同于
+git push origin --delete <branch_name>
+
+# 建立当前分支和远程分支的追踪关系
+git push -u origin <branch_name>
+
+# 如果当前分支与远程分支之间存在追踪关系
+# 则可以省略分支和 -u 
+git push
+
+# 不管是否存在对应的远程分支，将本地的所有分支都推送到远程主机
+git push --all origin
+
+# 拉取所有远程分支到本地镜像仓库中
+git pull
+
+# 拉取并合并项目其他人员的一个分支 
+git pull origin <branch_name>  
+# 等同于 fetch + merge
+git fetch origin <branch_name>  
+git merge origin/<branch_name>  
+
+# 如果远程主机的版本比本地版本更新，推送时 Git 会报错，要求先在本地做 git pull 合并差异，
+# 然后再推送到远程主机。这时，如果你一定要推送，可以使用 –-force 选项进行强制推送 
+# ps. 尽量避免使用
+git push -f origin
+git push --force origin 
+```
+
+#### `git branch`：创建、删除、切换分支
+
+```bash
+# 查看本地分支
+git branch
+git branch -l 
+
+# 查看远程分支
+git branch -r 
+
+# 查看所有分支（本地分支+远程分支）
+git branch -a 
+
+# 查看所有分支并带上最新的提交信息
+git branch -av 
+
+# 查看本地分支对应的远程分支
+git branch -vv 
+
+# 新建分支
+# 在别的分支下新建一个分支，新分支会复制当前分支的内容
+# 注意：如果当前分支有修改，但是没有提交到仓库，此时修改的内容是不会被复制到新分支的
+git branch <branch_name> 
+# 切换分支(切换分支时，本地工作区，仓库都会相应切换到对应分支的内容)
+git checkout <branch_name> 
+
+# 例子：创建一个 test 分支，并切换到该分支 （新建分支和切换分支的简写）
+git checkout -b test
+# 可以看做是基于 main 分支创建一个 test 分支，并切换到该分支
+git checkout -b test main
+
+# 新建一条空分支（详情请看问题列表）
+git checkout --orphan empty<branch_name>
+git rm -rf . 
+
+# 删除本地分支,会阻止删除包含未合并更改的分支
+git brnach -d <branch_name> 
+
+# 强制删除一个本地分支，即使包含未合并更改的分支
+git branch -D <branch_name>  
+
+# 删除远程分支
+# 推送一个空分支到远程分支，其实就相当于删除远程分支
+git push origin  :远程分支名
+# 或者
+git push origin --delete 远程分支名 
+
+# 修改当前分支名
+git branch -m <branch_name> 
+```
+
+#### `git merge`：合并分支
+
+```bash
+# 默认 fast-forward ，HEAD 指针直接指向被合并的分支
+git merge 
+
+# 禁止快进式合并
+git merge --no-ff 
+
+git merge --squash 
+
+```
 
 ### 基础使用：已有一个项目，但之前未使用Git，将之推送到GitHub
 1. 去GitHub上创建一个新的项目
