@@ -158,10 +158,10 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
     ```
 2. 创建后会在`~/.ssh`目录下生成`id_rsa`和`id_rsa.pub`两个文件
     这两个就是生成的秘钥对，其中`id_rsa`是私钥，保存在自己设备上即可
-    <img src="/Image/Basic%20Computer%20Knowledge/Git/git_07.png" title="NAME" height="100%" width="100%">
+    <img src="/Image/Basic%20Computer%20Knowledge/Git/git_07.png" title="NAME" height="50%" width="50%">
 3. 路径： 头像->`Settings`->`SSH and GPG Keys`->点击`New SSH Key`->设置key名字和内容
     1. 头像->`Settings`
-        <img src="/Image/Basic%20Computer%20Knowledge/Git/git_01.png" title="NAME" height="30%" width="30%">
+        <img src="/Image/Basic%20Computer%20Knowledge/Git/git_01.png" title="NAME" height="20%" width="20%">
     2. `Settings`->`SSH and GPG Keys`
         <img src="/Image/Basic%20Computer%20Knowledge/Git/git_08.png" title="NAME" height="50%" width="50%">
     3. 点击`New SSH Key`->设置key名字和内容
@@ -909,7 +909,7 @@ git commit -n
 
 1. 路径： 头像->`Settings`->`Developer settings`->`Personal access tokens`->点击`Generate new token`->设置token名字、过期时间和权限->复制token->再次运行`git push`，填写帐号和token
    1. 头像->`Settings`
-       <img src="/Image/Basic%20Computer%20Knowledge/Git/git_01.png" title="NAME" height="30%" width="30%">
+       <img src="/Image/Basic%20Computer%20Knowledge/Git/git_01.png" title="NAME" height="20%" width="20%">
    2. `Settings`->`Developer settings`
        <img src="/Image/Basic%20Computer%20Knowledge/Git/git_02.png" title="NAME" height="50%" width="50%">
    3. `Developer settings`->`Personal access tokens`
