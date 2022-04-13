@@ -11,7 +11,6 @@
   - [Linux](#linux)
   - [Regular Expression](#regular-expression)
   - [Basic Algorithm](#basic-algorithm)
-  - [CMake](#cmake)
 - [Computer Vision](#computer-vision)
   - [Machine Learning](#machine-learning)
   - [Deep Learning](#deep-learning)
@@ -45,8 +44,6 @@
 ### Regular Expression
 
 ### Basic Algorithm
-
-### CMake
 
 ## Computer Vision
 
