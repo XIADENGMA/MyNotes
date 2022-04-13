@@ -70,16 +70,7 @@
 
 为了解决这个问题，人们很久以前就开发了许多种本地版本控制系统，大多都是采用某种简单的数据库来记录文件的历次更新差异。
 
-<center>
-    <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" 
-    src="/Image/Basic%20Computer%20Knowledge/Git/git_12.png">
-    <br>
-    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
-    display: inline-block;
-    color: #999;
-    padding: 2px;">本地版本控制系统示意图</div>
-</center>
+<img src="/Image/Basic%20Computer%20Knowledge/Git/git_12.png" title="NAME" height="70%" width="70%">
 
 其中最流行的一种叫做`RCS`，现今许多计算机系统上都还看得到它的踪影。`RCS`的工作原理是在硬盘上保存补丁集（补丁是指文件修订前后的变化）；通过应用所有的补丁，可以重新计算出各个版本的文件内容。
 
@@ -87,16 +78,7 @@
 
 接下来人们又遇到一个问题，如何让在不同系统上的开发者协同工作？ 于是，集中化的版本控制系统（`Centralized Version Control Systems`，简称`CVCS`） 应运而生。 这类系统，诸如`CVS`、`Subversion`以及`Perforce`等，都有一个单一的集中管理的服务器，保存所有文件的修订版本，而协同工作的人们都通过客户端连到这台服务器，取出最新的文件或者提交更新。多年以来，这已成为版本控制系统的标准做法。
 
-<center>
-    <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" 
-    src="/Image/Basic%20Computer%20Knowledge/Git/git_13.png">
-    <br>
-    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
-    display: inline-block;
-    color: #999;
-    padding: 2px;">集中化的版本控制系统示意图</div>
-</center>
+<img src="/Image/Basic%20Computer%20Knowledge/Git/git_13.png" title="NAME" height="70%" width="70%">
 
 这种做法带来了许多好处，特别是相较于老式的本地`VCS`来说。现在，每个人都可以在一定程度上看到项目中的其他人正在做些什么。而管理员也可以轻松掌控每个开发者的权限，并且管理一个`CVCS`要远比在各个客户端上维护本地数据库来得轻松容易。
 
@@ -106,16 +88,7 @@
 
 于是分布式版本控制系统（`Distributed Version Control System`，简称`DVCS`）面世了。在这类系统中，像`Git`、`Mercurial`、`Bazaar`以及`Darcs`等，客户端并不只提取最新版本的文件快照，而是把代码仓库完整地镜像下来，包括完整的历史记录。这么一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。因为每一次的克隆操作，实际上都是一次对代码仓库的完整备份。
 
-<center>
-    <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" 
-    src="/Image/Basic%20Computer%20Knowledge/Git/git_14.png">
-    <br>
-    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
-    display: inline-block;
-    color: #999;
-    padding: 2px;">分布式版本控制系统示意图</div>
-</center>
+<img src="/Image/Basic%20Computer%20Knowledge/Git/git_14.png" title="NAME" height="70%" width="70%">
 
 更进一步，许多这类系统都可以指定和若干不同的远端代码仓库进行交互。籍此，你就可以在同一个项目中，分别和不同工作小组的人相互协作。 你可以根据需要设定不同的协作流程，比如层次模型式的工作流，而这在以前的集中式系统中是无法实现的。
 
@@ -185,16 +158,7 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
     ```
 2. 创建后会在`~/.ssh`目录下生成`id_rsa`和`id_rsa.pub`两个文件
     这两个就是生成的秘钥对，其中`id_rsa`是私钥，保存在自己设备上即可
-    <center>
-    <img style="border-radius: 0.3125em;
-    box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);" 
-    src="/Image/Basic%20Computer%20Knowledge/Git/git_07.png">
-    <br>
-    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
-    display: inline-block;
-    color: #999;
-    padding: 2px;">运行效果</div>
-    </center>
+    <img src="/Image/Basic%20Computer%20Knowledge/Git/git_07.png" title="NAME" height="50%" width="50%">
 3. 路径： 头像->`Settings`->`SSH and GPG Keys`->点击`New SSH Key`->设置key名字和内容
     1. 头像->`Settings`
         <img src="/Image/Basic%20Computer%20Knowledge/Git/git_01.png" title="NAME" height="20%" width="20%">
