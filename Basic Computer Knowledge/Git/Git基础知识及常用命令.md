@@ -922,7 +922,7 @@ git commit -n
 
 比如你的项目是`java`项目，`.java`文件编译后会生成`.class`文件，这些文件多数情况下是不想被传到仓库中的文件。
 
-- 这时候你可以直接适用github的[.gitignore文件模板](https://github.com/github/gitignore/blob/master/Java.gitignore)，将这些忽略文件信息复制到你的`.gitignore`文件中去。
+- 这时候你可以直接适用github的.gitignore文件模板[<https://github.com/github/gitignore/blob/master/Java.gitignore>]，将这些忽略文件信息复制到你的`.gitignore`文件中去。
 
 - `.gitignore`文件保存后，使用`git status`来检查下是否还有我们不需要的文件会被添加到git中去
   ```bash
