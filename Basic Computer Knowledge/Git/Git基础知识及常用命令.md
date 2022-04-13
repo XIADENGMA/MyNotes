@@ -158,7 +158,7 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
     ```
 2. 创建后会在`~/.ssh`目录下生成`id_rsa`和`id_rsa.pub`两个文件
     这两个就是生成的秘钥对，其中`id_rsa`是私钥，保存在自己设备上即可
-    <img src="/Image/Basic%20Computer%20Knowledge/Git/git_07.png" title="NAME" height="100%" width="1100%">
+    <img src="/Image/Basic%20Computer%20Knowledge/Git/git_07.png" title="NAME" height="100%" width="100%">
 3. 路径： 头像->`Settings`->`SSH and GPG Keys`->点击`New SSH Key`->设置key名字和内容
     1. 头像->`Settings`
         <img src="/Image/Basic%20Computer%20Knowledge/Git/git_01.png" title="NAME" height="30%" width="30%">
