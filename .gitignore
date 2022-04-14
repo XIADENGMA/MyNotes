@@ -1,4 +1,5 @@
 # 忽略单个文件
+.gitignore
 
 # 忽略多个文件
 *.log
@@ -6,3 +7,4 @@
 *.synctex.gz
 
 # 忽略文件夹
+*ipynb_checkpoints/
