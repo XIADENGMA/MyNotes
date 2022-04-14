@@ -950,10 +950,10 @@ git commit -n
   HelloWorld.class
   Use -f if you really want to add the
   ```
-- git会提示我们这个文件已经被我们忽略了，需要加上`-f`参数才能强制添加到 git中去：
-  ```bash
-  git add -f HelloWorld.class
-  ```
+  - git会提示我们这个文件已经被我们忽略了，需要加上`-f`参数才能强制添加到 git中去：
+    ```bash
+    git add -f HelloWorld.class
+    ```
 - 我们可以查看一下是否添加成功
   ```bash
   $ git status
