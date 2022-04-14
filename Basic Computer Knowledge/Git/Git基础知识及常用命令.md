@@ -168,7 +168,7 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
     1. 头像->`Settings`
         <img src="/Image/Basic%20Computer%20Knowledge/Git/git_01.png" title="NAME" height="30%" width="30%">
     2. `Settings`->`SSH and GPG Keys`
-        <img src="/Image/Basic%20Computer%20Knowledge/Git/git_08.png" title="NAME" height="50%" width="50%">
+        <img src="/Image/Basic%20Computer%20Knowledge/Git/git_08.png" title="NAME" height="70%" width="70%">
     3. 点击`New SSH Key`->设置key名字和内容
         <img src="/Image/Basic%20Computer%20Knowledge/Git/git_09.png" title="NAME" height="70%" width="70%">
 4. 测试设置是否成功
@@ -804,9 +804,9 @@ git clone --recurse-submodules <url>
 1. 去GitHub上创建一个新的项目
    1. 路径：`Repositories`->`New`->填写仓库信息->点击`Create repository`
       1. `Repositories`->`New`
-        <img src="/Image/Basic%20Computer%20Knowledge/Git/git_10.png" title="NAME" height="100%" width="100%">
+        <img src="/Image/Basic%20Computer%20Knowledge/Git/git_10.png" title="NAME" height="70%" width="70%">
       2. `New`->填写仓库信息
-        <img src="/Image/Basic%20Computer%20Knowledge/Git/git_11.png" title="NAME" height="100%" width="100%">
+        <img src="/Image/Basic%20Computer%20Knowledge/Git/git_11.png" title="NAME" height="70%" width="70%">
       3. 点击`Create repository`
 2. 设置本地仓库（需要在项目文件夹下）
     ```bash
