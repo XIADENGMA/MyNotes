@@ -5,6 +5,7 @@
 *.log
 *.aux
 *.synctex.gz
+*.o
 
 # 忽略文件夹
 *ipynb_checkpoints/
