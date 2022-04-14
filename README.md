@@ -68,6 +68,6 @@
 
 ### LaTeX
 
-- [Linux安装TexLive及VsCode使用LaTeX]()
+- [Linux安装TexLive及VsCode使用LaTeX](/Write/LaTeX/Linux安装TexLive及VsCode使用LaTeX.md)
 
 ## Math
