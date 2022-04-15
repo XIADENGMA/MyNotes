@@ -58,7 +58,7 @@
     tex -v
     ```
 - 得到如下界面，则表示安装成功
-    <img src="/Image/Write/LaTeX/latex_02.png" title="NAME" height="70%" width="70%">
+    - <img src="/Image/Write/LaTeX/latex_02.png" title="NAME" height="70%" width="70%">
 
 ## VsCode使用LaTeX
 
