@@ -39,6 +39,7 @@
   - [常用操作](#常用操作)
     - [已有一个项目，但之前未使用Git，将之推送到GitHub](#已有一个项目但之前未使用git将之推送到github)
     - [已有一个项目，并且已经推送到GitHub，现在更新了代码，再次推送](#已有一个项目并且已经推送到github现在更新了代码再次推送)
+    - [清空所有的 commit 记录](#清空所有的-commit-记录)
 - [Git分支管理规范](#git分支管理规范)
 - [Git 钩子](#git-钩子)
   - [`pre-commit`](#pre-commit)
@@ -826,6 +827,33 @@ git commit -m "update code" # 提交，填写本次提交说明
 git push
 ```
 
+#### 清空所有的 commit 记录
+
+1. 基于当前分支创建一个独立的分支
+    ```bash
+    git checkout --orphan  <new_branch>
+    ```
+2. 添加所有文件变化至暂存空间
+    ```bash
+    git add -A
+    ```
+3. 提交并添加提交记录
+    ```bash
+    git commit -am "init"
+    ```
+4. 删除你想去掉 commit 记录的分支，示例为`main`
+    ```bash
+    git branch -D main
+    ```
+5. 重新命名当前独立分支为`main`
+    ```bash
+    git branch -m main
+    ```
+6. 强制推送到远端分支
+    ```bash
+    git push -f origin main
+    ```
+    **提示：如果` git push -f `推送报错, 说明权限不够**
 
 ## Git分支管理规范
 
